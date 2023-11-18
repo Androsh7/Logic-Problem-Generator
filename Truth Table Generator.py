@@ -1,17 +1,13 @@
 import random
 
-# Truth Table Generator V1.1
-
 # solves a logic problem by taking two 8 digit long truth tables and uses the operator to create a new 8 integer truth table
 # problem setup is as follows:  inputTable1 Operator inputTable2
 # example:                          p          ^         q
 
 # takes a 1d array (inputTable) and puts it as the subarray of outTable at location outTableNum
 def copy2dArray (inputTable, outTable,outTableNum):
-    i = 0
-    while i < 8:
+    for i in range(0,8):
         inputTable[i] = outTable[outTableNum][i]
-        i = i + 1
 
 # takes two logic arrays and creates a solution table based on the operator
 def solve2varLogic (inputTable1, inputTable2, operator):
