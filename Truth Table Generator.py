@@ -6,8 +6,10 @@ import random
 
 # takes a 1d array (inputTable) and puts it as the subarray of outTable at location outTableNum
 def copy2dArray (inputTable, outTable,outTableNum):
-    for i in range(0,8):
+    i = 0
+    while i < 8:
         inputTable[i] = outTable[outTableNum][i]
+        i = i + 1
 
 # takes two logic arrays and creates a solution table based on the operator
 def solve2varLogic (inputTable1, inputTable2, operator):
@@ -61,9 +63,9 @@ def solve2varLogic (inputTable1, inputTable2, operator):
         # placeholder operand
         elif operator == '@':
             outTable[i] = inputTable1[i]
-
         i = i + 1
-    print ("solving:",inputTable1,operator, inputTable2, "answer:",outTable)
+
+    #print ("solving:",inputTable1,operator, inputTable2, "answer:",outTable)
     return outTable
 
 inputTable1 = [3,3,3,3,3,3,3,3]
@@ -130,10 +132,9 @@ def logicToStr (inputArray):
     #step 1
     #converts each row into a string and places it in the array outputStringArray
     stringToPass = ""
-    rows = 0
-    columns = 0
-    while rows < len(inputArray):
-        while columns < 3:
+
+    for rows in range(0,len(inputArray)):
+        for columns in range (0,3):
             
             # char to str conversions
             if (inputArray[rows][columns]) == 'p':
@@ -164,16 +165,13 @@ def logicToStr (inputArray):
                 stringToPass = stringToPass + ' <-> '
             else:
                 stringToPass = stringToPass + str(inputArray[rows][columns])
-            columns = columns + 1
         outputStringArray.append(stringToPass)
         stringToPass = ''
-        rows = rows + 1
         columns = 0
     
-    #print("outputArray p1:",outputStringArray)
     
     #step 2
-    #looks at the outputStringArray and replaces 0s through 3s with their corresponding sections in the outputStringArray to pass
+    #looks at the outputStringArray and replaces all integers with their corresponding sections in the outputStringArray to pass
     toDelete = []
     stringNum = 0
     charNum = 0
@@ -202,7 +200,7 @@ def logicToStr (inputArray):
     FinalString = ""
     for i in range (0,len(outputStringArray)):
         FinalString = FinalString + outputStringArray[i]
-    print(outputStringArray)
+    #print(outputStringArray)
     return FinalString
     
 def genLogic (seed, length):
@@ -220,7 +218,6 @@ def genLogic (seed, length):
     stringNum = 0
     charNum = 0
     while stringNum < length:
-        x = 0  
         while charNum < 3:
             
             for value in intsWrittenRaw:
@@ -246,29 +243,26 @@ def genLogic (seed, length):
             
             # checks to see if the program needs to start forcing integer inputs
             #      ints that need to be inputed  >= the remaining locations that integers can be placed in
-            elif length - varWritten > varPlacesLeft:
-                print("if",length - varWritten,varPlacesLeft)
-                print("range:",len(intsWrittenSortedUnique) - 1,length - 2)
-                for i in range (0, length -2):
+            elif varPlacesLeft <= (length - 1) - varWritten:
+                for i in range (0, length -1):
                     if i not in intsWrittenSortedUnique:
                         if isinstance(charsToAdd[charNum], int):
-                            print("skip")
+                            nothing = 0
                         elif i >= (len(intsWrittenSortedUnique) - 1):
                             charsToAdd[charNum] = i
                             intsWrittenRaw.append(i)
                             varPlacesLeft = varPlacesLeft - 1
                             varWritten = varWritten + 1
-                            print("force1: ",i, "at",stringNum,charNum,x)
                         elif i != intsWrittenSortedUnique[i]:
                             charsToAdd[charNum] = i 
                             intsWrittenRaw.append(i)
                             varPlacesLeft = varPlacesLeft - 1
                             varWritten = varWritten + 1
-                            print("force2: ",i, "at",stringNum,charNum,x)
+                        else:
+                            print("ERROR")
                         
 
                     
-                    print(charsToAdd)
             else:
                 randomNum = random.randint(0,5 + stringNum)
                 # char to str conversions
@@ -287,6 +281,7 @@ def genLogic (seed, length):
                 else:
                     charsToAdd[charNum] = randomNum - 6
                     intsWrittenRaw.append(randomNum - 6)
+                    varWritten = varWritten + 1
                 varPlacesLeft = varPlacesLeft - 1
             charNum = charNum + 1
             
@@ -295,13 +290,12 @@ def genLogic (seed, length):
                 if value not in intsWrittenSortedUnique:
                     intsWrittenSortedUnique.append(value)
             intsWrittenSortedUnique = sorted(intsWrittenSortedUnique)
-        print("intsWrittenRaw = ",intsWrittenRaw)
-        print("intsWrittenSortedUnique = ",intsWrittenSortedUnique)
     
         stringNum = stringNum + 1
         charNum = 0
         outputLogic.append(charsToAdd)
-        print("Added chars: ",charsToAdd)
+        #print("Added chars: ",charsToAdd)
+        #print(varPlacesLeft,"<=",(length - 2) - varWritten)
         charsToAdd = ['@','@','@']
     return outputLogic
         
@@ -322,7 +316,9 @@ while True:
     else:
         problemArray = genLogic(userSeed,userSize)
         print("raw problem:",problemArray)
+        print()
         print("str problem:",logicToStr(problemArray))
+        print()
         solve3varLogic(problemArray,solutionArray)
         print("solution: ", solutionArray)
         problemArray = []
