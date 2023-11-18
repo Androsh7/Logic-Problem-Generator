@@ -1,7 +1,6 @@
 import random
 
 # Truth Table Generator V1.1
-# by Andrew Nelson
 
 # solves a logic problem by taking two 8 digit long truth tables and uses the operator to create a new 8 integer truth table
 # problem setup is as follows:  inputTable1 Operator inputTable2
