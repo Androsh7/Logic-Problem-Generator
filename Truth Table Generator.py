@@ -144,25 +144,23 @@ def logicToStr (inputArray):
             elif (inputArray[rows][columns]) == 'r':
                 stringToPass = stringToPass + 'r'
             elif (inputArray[rows][columns]) == 't':
-                stringToPass = stringToPass + 'not p'
+                stringToPass = stringToPass + '¬p'
             elif (inputArray[rows][columns]) == 'u':
-                stringToPass = stringToPass + 'not q'
+                stringToPass = stringToPass + '¬q'
             elif (inputArray[rows][columns]) == 'v':
-                stringToPass = stringToPass + 'not r'
+                stringToPass = stringToPass + '¬r'
             elif (inputArray[rows][columns]) == '|':
-                stringToPass = stringToPass + ' or '
+                stringToPass = stringToPass + ' ∨ '
             elif (inputArray[rows][columns]) == '&':
-                stringToPass = stringToPass + ' and '
+                stringToPass = stringToPass + ' ∧ '
             elif (inputArray[rows][columns]) == '^':
                 stringToPass = stringToPass + ' xor '
             elif (inputArray[rows][columns]) == '@':
                 stringToPass = stringToPass
             elif (inputArray[rows][columns]) == '>':
-                stringToPass = stringToPass + ' --> '
-            elif (inputArray[rows][columns]) == '/':
-                stringToPass = stringToPass + ' not'
+                stringToPass = stringToPass + ' → '
             elif (inputArray[rows][columns]) == '=':
-                stringToPass = stringToPass + ' <-> '
+                stringToPass = stringToPass + ' ↔ '
             else:
                 stringToPass = stringToPass + str(inputArray[rows][columns])
         outputStringArray.append(stringToPass)
@@ -281,7 +279,6 @@ def genLogic (seed, length):
                 else:
                     charsToAdd[charNum] = randomNum - 6
                     intsWrittenRaw.append(randomNum - 6)
-                    varWritten = varWritten + 1
                 varPlacesLeft = varPlacesLeft - 1
             charNum = charNum + 1
             
@@ -290,6 +287,7 @@ def genLogic (seed, length):
                 if value not in intsWrittenSortedUnique:
                     intsWrittenSortedUnique.append(value)
             intsWrittenSortedUnique = sorted(intsWrittenSortedUnique)
+            varWritten = len(intsWrittenSortedUnique)
     
         stringNum = stringNum + 1
         charNum = 0
